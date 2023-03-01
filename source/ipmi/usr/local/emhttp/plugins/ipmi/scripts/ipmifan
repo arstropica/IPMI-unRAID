@@ -252,7 +252,7 @@ function get_highest_temp(){
     //get all hard drives
     $disksini = parse_ini_file('/var/local/emhttp/disks.ini',true);
     $devsini = parse_ini_file('/var/local/emhttp/devs.ini',true)
-    if ($diskini && $devini) $hdds = array_merge($diskini, $devsini); else $hdds = array() ;
+    if ($disksini && $devsini) $hdds = array_merge($disksini, $devsini); else $hdds = array() ;
     unset($hdds['flash']);
 
     $highest_temp = 0;
