@@ -265,11 +265,11 @@ $(function(){
     });
 
     // if png is missing, replaced with unknown.png
-    $('#board-img')
-        .error(function() {
-            $('#board-img').attr('src', '/plugins/ipmi/images/unknown.png');
-        })
-        .attr('src', "/plugins/ipmi/images/<?=$board;?>.png");
+   // $('#board-img')
+     //   .error(function() {
+     //       $('#board-img').attr('src', '/plugins/ipmi/images/unknown.png');
+     //   })
+     //   .attr('src', "/plugins/ipmi/images/<?=$board;?>.png");
 
     $('#bmc-reset').click(resetBMC);
 
