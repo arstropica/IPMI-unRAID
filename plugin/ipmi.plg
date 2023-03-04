@@ -3,7 +3,7 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "ipmi">
 <!ENTITY author    "SimonFair">
-<!ENTITY version   "2023.03.02">
+<!ENTITY version   "2023.03.04">
 <!ENTITY launch    "Settings/IPMI">
 <!ENTITY gitURL    "https://raw.githubusercontent.com/&author;/IPMI-unRAID/master">
 <!ENTITY pluginURL "&gitURL;/plugin/&name;.plg">
@@ -17,14 +17,10 @@
 
 <CHANGES>
 ##&name;
-###2023.03.02
-###2023.03.01b
-###2023.03.01a
-###2023.03.01
+###2023.03.04
+- Fix config and sensor config retreval.
 ###2023.02.15a
 - 6.12 Fixes
-###2023.02.15
-###2023.02.14a
 ###2023.02.14
 - update PHP8
 - update 6.12 dashboard
