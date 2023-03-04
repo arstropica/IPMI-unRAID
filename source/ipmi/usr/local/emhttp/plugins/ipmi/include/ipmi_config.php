@@ -57,12 +57,13 @@ if($commit && !empty($config)){
     // save config file changes
     file_put_contents($config_file, $config);
     $cmd .= "--commit $netopts 2>&1";
-
+    $return_var = NULL ;
     exec($cmd, $output, $return_var);
 }else{
     $cmd .= "--checkout $netopts 2>/dev/null";
-    $return_var=null ;
+    $return_var=NULL ;
     exec($cmd, $output, $return_var);
+    $return_var=NULL 
 }
 
 
