@@ -43,6 +43,10 @@ EOT;
 
 
 <script>
+if (typeof jQuery.prototype.hideMe == 'undefined') {
+  jQuery.prototype.hideMe = function() {return;}
+}
+
 $(function(){
     sensorArray(false);
     setTimeout(sensorRefresh, 20000);
@@ -133,7 +137,7 @@ function sensorArray(Refresh){
             '<span class="w18"><i class="fa fa-circle orb '+ data.State[sensor.State] +'-orb middle"></i></span>'+ //state
             '<span class="w36">'+sensor.Name+'</span>'+ //sensor name
             '<span id="'+i+'" class="w36 reading">'+ '<font color="'+ Color + '">'+ Reading + Units +'</font></span>'+ //sensor reading
-            '</td></tr>');
+            '</td></tr>').hideMe();
             }
         });
     });
