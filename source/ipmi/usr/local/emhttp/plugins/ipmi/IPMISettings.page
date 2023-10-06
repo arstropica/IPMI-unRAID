@@ -51,6 +51,16 @@ Enable Network Connection(s):
 
 > Password for IPMI connection(s).
 
+> IPMI LAN Version for IPMI connections(s).
+
+<label class="ipmi-lan">IPMI Lan Version:</label>
+: <select id="IPMILAN" class="ipmi-run ipmi-lan" name="IPMILAN" size="1"  title="Set IPMI Lan verion">
+  <?=mk_option($ipmilan, 'LAN', '1.5');?>
+  <?=mk_option($ipmilan, 'LAN_2_0', '2.0');?>
+  </select>
+
+> IPMI LAN Verison for IPMI connection(s). Default is 1.5 ASRock may require 2.0
+
 Enable Virtual Machine Override:
 : <select id="OVERRIDE" class="ipmi-run ipmi-lan" name="OVERRIDE" size="1"  title="Enable motherboard override for virtual machines">
   <?=mk_option($override, 'disable', 'No');?>

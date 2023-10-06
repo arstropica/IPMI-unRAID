@@ -18,6 +18,7 @@ $ignore    = isset($cfg['IGNORE'])    ? htmlspecialchars($cfg['IGNORE'])    : ''
 $dignore   = isset($cfg['DIGNORE'])   ? htmlspecialchars($cfg['DIGNORE'])   : '';
 $devignore = isset($cfg['DEVIGNORE']) ? htmlspecialchars($cfg['DEVIGNORE']) : '';
 $devs      = isset($cfg['DEVS'])      ? htmlspecialchars($cfg['DEVS'])      : 'enable';
+$ipmilan   = isset($cfg['IPMILAN'])   ? htmlspecialchars($cfg['IPMILAN'])   : 'LAN';
 
 /* check if local ipmi driver is loaded */
 $ipmi = (file_exists('/dev/ipmi0') || file_exists('/dev/ipmi/0') || file_exists('/dev/ipmidev/0')); // Thanks to ljm42
@@ -28,5 +29,5 @@ $password_decode = escapeshellarg(base64_decode($password)) ;
 
 #$password_decode = escapeshellarg($password) ;
 $netopts = ($netsvc === 'enable') ? '--always-prefix -h '.escapeshellarg($ipaddr).' -u '.escapeshellarg($user).' -p '.
-    $password_decode." --session-timeout=5000 --retransmission-timeout=1000" : '';
+    $password_decode." --session-timeout=5000 --retransmission-timeout=1000 -D $ipmilan" : '';
 ?>
