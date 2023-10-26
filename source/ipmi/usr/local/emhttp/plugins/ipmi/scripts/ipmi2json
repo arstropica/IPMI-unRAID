@@ -36,6 +36,7 @@ $longopts = [
     'version'
 ];
 $args = getopt($shortopts, $longopts);
+$board_model = rtrim(ltrim(shell_exec("dmidecode -qt2|awk -F: '/^\tProduct Name:/ {print $2}'")));
 
 if (array_key_exists('help', $args)) {
     echo $usage.PHP_EOL;
@@ -132,6 +133,14 @@ function ipmi_sensors_fans() {
 # 01 - 64  = 1% - 100%                      #
 #############################################
 
+#####################################################################
+# ASRock (X570D4I-2T)                                               #
+# ipmi-raw 00 3a d7 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 #
+# ipmi-raw 00 3a d7 AA BB CC DD EE FF GG HH II JJ KK LL MM NN OO PP #
+# 00 = smartfan mode                                                #
+# 01 - 64  = 1% - 100%                                              #
+#####################################################################
+
 #############################################
 # ASRock Dual Socket
 # ipmi-raw 00 3a 01 CPU_1_OVERRIDE CPU_1 REAR_1 FRONT_1 FRONT_2 FRONT_3
@@ -146,12 +155,17 @@ function ipmi_sensors_fans() {
 
 $lun   = '00';
 $netfn = '3a';
-$com   = '01';
-$raw   = '00 3a 01';
+$com   = ($board_model == "X570D4I-2T") ? 'd6' : '01';
+$raw   = "${lun} ${netfn} ${com}";
 $board_json = [];
 $board_tmp = $board;
 
-if ($cmd_count == 0){
+if ($board_model == "X570D4I-2T") {
+    $fans_start = 0;
+    $fans_count = 16;
+    $auto  = implode(" ", array_fill(0, $fans_count, "00")) . " ";
+    $full  = implode(" ", array_fill(0, $fans_count, "64")) . " ";
+}elseif ($cmd_count == 0){
     $fans_start = 0;
     $fans_count = 7;
     $auto  = '00 00 00 00 00 00 00 00';
@@ -167,13 +181,16 @@ fanlog('Checking IPMI fan Locations...');
 
 for($i = 0; $i <= $cmd_count; $i++){
     $fans   = [];
-    if ($i !== 0){
+    $com1   = $com;
+    // Not X570D4I-2T
+    if ($i !== 0) {
         $fans_count = 3;
         $auto  = '00 00 00 00';
         $full  = '01 64 64 64';
+        $com1  = "${i}1";
     }
 
-    $raw = "${lun} ${netfn} ${i}1";
+    $raw = "${lun} ${netfn} ${com1}";
 
     // set fans to full speed and get readings
     $cmd = "ipmi-raw $raw $full $fanopts 2>&1";
