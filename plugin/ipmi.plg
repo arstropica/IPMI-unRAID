@@ -3,7 +3,7 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "ipmi">
 <!ENTITY author    "arstropica">
-<!ENTITY version   "2023.10.27">
+<!ENTITY version   "2023.10.26">
 <!ENTITY launch    "Settings/IPMI">
 <!ENTITY gitURL    "https://raw.githubusercontent.com/&author;/IPMI-unRAID/X570D4I-2T">
 <!ENTITY pluginURL "&gitURL;/plugin/&name;.plg">
@@ -17,7 +17,7 @@
 
 <CHANGES>
 ##&name;
-###2023.10.27
+###2023.10.26
 - Add ASRock X570D4I-2T compatibility
 ###2023.10.06
 - Add IPMI LAN Version option. Default 1.5
