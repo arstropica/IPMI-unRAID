@@ -15,11 +15,13 @@ ARCHIVE_PATH="archive/$ARCHIVE_NAME"
 MD5_NAME="${NAME}-${VERSION}-x86_64-1.md5"
 MD5_PATH="archive/$MD5_NAME"
 
-# Create the compressed archive
-tar cJf $ARCHIVE_PATH source/ipmi
+# Create the compressed archive of the contents of source/ipmi
+# We change to the directory and use * to tar all its contents without the directory itself
+cd source/ipmi
+tar cJf ../../$ARCHIVE_PATH *
+cd ../..
 
 # Create MD5 hash file
-# Change to the archive directory so that md5sum doesn't include the path
 cd archive
 md5sum $ARCHIVE_NAME > $MD5_NAME
 cd ..
