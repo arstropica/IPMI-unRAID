@@ -3,7 +3,7 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "ipmi">
 <!ENTITY author    "arstropica">
-<!ENTITY version   "2023.10.26">
+<!ENTITY version   "2023.10.06">
 <!ENTITY launch    "Settings/IPMI">
 <!ENTITY gitURL    "https://raw.githubusercontent.com/&author;/IPMI-unRAID/X570D4I-2T">
 <!ENTITY pluginURL "&gitURL;/plugin/&name;.plg">
