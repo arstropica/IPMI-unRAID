@@ -162,9 +162,9 @@ $board_tmp = $board;
 
 if ($board_model == "X570D4I-2T") {
     $fans_start = 0;
-    $fans_count = 16;
-    $auto  = implode(" ", array_fill(0, $fans_count, "00")) . " ";
-    $full  = implode(" ", array_fill(0, $fans_count, "64")) . " ";
+    $fans_count = 15;
+    $auto  = implode(" ", array_fill(0, $fans_count + 1, "00")) . " ";
+    $full  = implode(" ", array_fill(0, $fans_count + 1, "64")) . " ";
 }elseif ($cmd_count == 0){
     $fans_start = 0;
     $fans_count = 7;
@@ -200,7 +200,7 @@ for($i = 0; $i <= $cmd_count; $i++){
 
     shell_exec($cmd);
 
-    sleep(30);
+    sleep(10);
     $fans_full = ipmi_sensors_fans();
     $detect_count = is_array($fans_full) ? count($fans_full) : $fans_count;
 
@@ -210,36 +210,35 @@ for($i = 0; $i <= $cmd_count; $i++){
         $location = ($cmd_count < 1 ? ($ii+1) : $ii);
         $name = 'FAN_POS'.$location;
 
-        // set postition in raw command to 1/3 and get readings
-        $hex = substr_replace($full,'21',$ii*3,2);
+        if ($detect_count > 0) {
+            // set postition in raw command to 1/3 and get readings
+            $hex = substr_replace($full,'21',$ii*3,2);
 
-        $cmd = "ipmi-raw $raw $hex $fanopts 2>&1";
+            $cmd = "ipmi-raw $raw $hex $fanopts 2>&1";
 
-        if ($debug)
-            fanlog($cmd);
+            if ($debug)
+                fanlog($cmd);
 
-        shell_exec($cmd);
+            shell_exec($cmd);
 
-        sleep(5);
-        $fans_1third = ipmi_sensors_fans();
+            sleep(5);
+            $fans_1third = ipmi_sensors_fans();
 
-        // check for fan speed changes
-        foreach($fans_full as $fan){
-            if($fan['Reading'] != 'N/A') {
-                if(($fan['Reading']-$fans_1third[$fan['ID']]['Reading']) > 300) {
-                    $name = $fan['Name'];
-                    $msg  = $name.' 100%: '.$fan['Reading'].' 33%: '.$fans_1third[$fan['ID']]['Reading'];
-                    $detect_count --;
+            // check for fan speed changes
+            foreach($fans_full as $fan){
+                if($fan['Reading'] != 'N/A') {
+                    if(($fan['Reading']-$fans_1third[$fan['ID']]['Reading']) > 300) {
+                        $name = $fan['Name'];
+                        $msg  = $name.' 100%: '.$fan['Reading'].' 33%: '.$fans_1third[$fan['ID']]['Reading'];
+                        $detect_count --;
+                    }
                 }
             }
+            unset($fans_1third);
         }
-        unset($fans_1third);
+
         $fans[$name] = $i.'1';
         fanlog("Location $i-".$location.': '.$msg);
-
-        if ($detect_count <= 0) {
-            break;
-        }
     }
 
     $cmd = "ipmi-raw $raw $auto $fanopts 2>&1";

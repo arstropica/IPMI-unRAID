@@ -322,7 +322,7 @@ $sensors      = ipmi_fan_sensors();
 $ipmipoll     = ($fanpoll <= $hddpoll) ? $fanpoll : $hddpoll;
 $fan_count    = $fanpoll * 10;
 $hdd_count    = $hddpoll * 10;
-$curent_hex   = '';
+$current_hex  = '';
 $current_hex2 = '';
 
 fanlog('Starting Fan Control');
@@ -410,21 +410,21 @@ while(TRUE){ while(TRUE){
 
             if($board !== 'Supermicro'){
                 //add value to hex for Asrock boards
-		if ($board_model == "X570D4I-2T") {
-		    $hex .= " $pwm";
-		} else {
-                    if($cmd_count !== 0 && $fan_count == 0){
-                        // set value for CPU fans for dual sockets
-                        if($pwm == '00'){
-                            $hex .= ' 00 00';
-                        }else{
-                            $hex .= " 01 $pwm";
-                        }
-
+		      if ($board_model == "X570D4I-2T") {
+		          $hex .= " $pwm";
+		      } else {
+                if($cmd_count !== 0 && $fan_count == 0){
+                    // set value for CPU fans for dual sockets
+                    if($pwm == '00'){
+                        $hex .= ' 00 00';
                     }else{
-                        $hex .= " $pwm";
+                        $hex .= " 01 $pwm";
                     }
-		}
+
+                }else{
+                    $hex .= " $pwm";
+                }
+		      }
             }else{
                 //create command for Supermicro
                 $cmd_str = "ipmi-raw $raw $value $pwm $fanopts 2>&1; ";
@@ -450,9 +450,6 @@ while(TRUE){ while(TRUE){
         }
         if($board !== 'Supermicro'){
             //compare last value to new value for Asrock boards
-	    if ($board_model == "X570D4I-2T") {
-		$hex = ltrim($hex);
-	    }
             $cmd_str = "ipmi-raw $raw$hex $fanopts 2>&1";
 
             if($i == 0){
