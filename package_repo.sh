@@ -17,8 +17,9 @@ MD5_PATH="archive/$MD5_NAME"
 
 # Create the compressed archive of the contents of source/ipmi
 # We change to the directory and use * to tar all its contents without the directory itself
+# Exclude .DS_Store files and __MACOSX folders
 cd source/ipmi
-tar cJf ../../$ARCHIVE_PATH *
+tar cJf ../../$ARCHIVE_PATH --exclude='.DS_Store' --exclude='__MACOSX' *
 cd ../..
 
 # Create MD5 hash file
