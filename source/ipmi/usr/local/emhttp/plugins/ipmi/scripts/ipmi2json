@@ -200,7 +200,7 @@ for($i = 0; $i <= $cmd_count; $i++){
 
     shell_exec($cmd);
 
-    sleep(5);
+    sleep(30);
     $fans_full = ipmi_sensors_fans();
 
 // step through each raw command position
@@ -219,7 +219,7 @@ for($i = 0; $i <= $cmd_count; $i++){
 
         shell_exec($cmd);
 
-        sleep(5);
+        sleep(30);
         $fans_1third = ipmi_sensors_fans();
 
         // check for fan speed changes
