@@ -19,7 +19,10 @@ MD5_PATH="archive/$MD5_NAME"
 tar cJf $ARCHIVE_PATH source/ipmi
 
 # Create MD5 hash file
-md5sum $ARCHIVE_PATH > $MD5_PATH
+# Change to the archive directory so that md5sum doesn't include the path
+cd archive
+md5sum $ARCHIVE_NAME > $MD5_NAME
+cd ..
 
 # Commit to the repo
 git add $ARCHIVE_PATH $MD5_PATH
