@@ -202,6 +202,7 @@ for($i = 0; $i <= $cmd_count; $i++){
 
     sleep(30);
     $fans_full = ipmi_sensors_fans();
+    $detect_count = is_array($fans_full) ? count($fans_full) : $fans_count;
 
 // step through each raw command position
     for($ii = $fans_start; $ii <= $fans_count; $ii++){
@@ -219,7 +220,7 @@ for($i = 0; $i <= $cmd_count; $i++){
 
         shell_exec($cmd);
 
-        sleep(30);
+        sleep(5);
         $fans_1third = ipmi_sensors_fans();
 
         // check for fan speed changes
@@ -228,12 +229,17 @@ for($i = 0; $i <= $cmd_count; $i++){
                 if(($fan['Reading']-$fans_1third[$fan['ID']]['Reading']) > 300) {
                     $name = $fan['Name'];
                     $msg  = $name.' 100%: '.$fan['Reading'].' 33%: '.$fans_1third[$fan['ID']]['Reading'];
+                    $detect_count --;
                 }
             }
         }
         unset($fans_1third);
         $fans[$name] = $i.'1';
         fanlog("Location $i-".$location.': '.$msg);
+
+        if ($detect_count <= 0) {
+            break;
+        }
     }
 
     $cmd = "ipmi-raw $raw $auto $fanopts 2>&1";
